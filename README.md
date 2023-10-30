@@ -48,5 +48,5 @@ if no arguments are provided, defaults to values defined in defaults.py.
 Author: Kalle Fornia  
 GitHub: https://github.com/duckwilliam/illumipy  
 PyPi: https://pypi.org/project/illumipy  
-Version: 1.1.2
+Version: 1.1.3
 10/2023
