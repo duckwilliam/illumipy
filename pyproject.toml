@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "illumipy"
+version = "1.1.2" 
+description = "illumipy is a Python module for estimating outside Illumination levels for given location, date and time."
+authors = ["Kalle Fornia <kallefornia@tuta.io>"]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/duckwilliam/illumipy"
+keywords = ["solar", "illumination", "sun", "sunrise", "sunset", "sunlight", "sunrise-sunset", "OpenWeatherMap", "brightness", "light"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+datetime = "^5.2"
+argparse = "^1.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
