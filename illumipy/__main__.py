@@ -90,15 +90,14 @@ if __name__ == "__main__":
         help="Print only values, no description",
         action="store_true",
         default=False,
-       ) 
-argParser.add_argument(
+   ) 
+    argParser.add_argument(
         "-i",
         "--install",
         help="Set up default vars" ,
         action="store_true",
         default=False,
-        )
-
+   ) 
 
     args = argParser.parse_args()
 
