@@ -8,11 +8,11 @@ import argparse
 import sys
 from sys import stderr
 from illumipy.data import light_data
-from illumipy.defaults import main as defvar
+from illumipy.defaults import set_as_env, main as defvar
 
 if __name__ == "__main__":
     
-    defvar() 
+    defaults.defvar() 
     
     argParser = argparse.ArgumentParser(
         description='General-purpose solar brightness calculator.'
@@ -89,8 +89,14 @@ if __name__ == "__main__":
         help="Print only values, no description",
         action="store_true",
         default=False,
+       ) 
+argParser.add_argument(
+        "-i",
+        "--install",
+        help="Set up default vars" ,
+        action="store_true",
+        default=False,
         )
-
 
 
     args = argParser.parse_args()
@@ -107,6 +113,7 @@ if __name__ == "__main__":
     print_all = args.all
     output_arg = args.output
     short_arg = args.short
+    install_arg = args.install
     
     if output_arg == ['help']:
         print("Available values for output:\n\
@@ -132,6 +139,9 @@ if __name__ == "__main__":
                 \t['declination'] = calculated solar declination angle for given date.\n\
                 \t['LSTM'] = Local standard time meridian in degrees.\n\
                 \t['EOT'] = Equation of Time.")
+        exit()
+    if install_arg is True:
+        defaults.set_as_env() 
         exit()
         
     args_debug = f"time={time_arg}, date={date_arg}, city={city_arg},\
