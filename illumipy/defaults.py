@@ -58,7 +58,7 @@ def set_os_env():
     _City = f"export OPENWEATHERMAP_CITY='{City}'"
     _Country = f"export OPENWEATHERMAP_COUNTRY='{Country}'"
     
-    with open(os.path.join((os.path.expanduser('~'), '.bashrc'), "a") as bashrc:
+    with open(os.path.join((os.path.expanduser('~')), '.bashrc'), "a") as bashrc:
         bashrc.write(f"{_APIkey}\n{_City}\n{_Country}")
    
         
