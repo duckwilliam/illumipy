@@ -6,7 +6,9 @@ Requires an OpenWeatherMap [APIkey](https://openweathermap.org/appid)
 - Calculates a variety of solar parameters that can be used for prediction of solar irradiance and solar energy production
 - Can be adjustes for date, time, location, cloud coverage and many more.
 - Can be used as imported Python module or accessed directly over CLI with a range of useful options
-- Uses the free OpenWeatherMap API## INSTALLATION
+- Uses the free OpenWeatherMap API
+
+## INSTALLATION
 
 Installation is easiest using a package manager like [PIP](https://pip.pypa.io/en/stable/ ). To install pip run:
 ```bash
