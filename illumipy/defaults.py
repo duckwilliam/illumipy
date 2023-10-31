@@ -9,7 +9,7 @@ __all__ = ['API_KEY_DEFAULT', 'CITY_DEFAULT', 'COUNTRY_DEFAULT']
 class Constants:
     def __init__(self, 
                  os_const: str, 
-                 py_constant: str
+                 py_const: str
                  ):
         self.os_const = os_const
         self.py_constant = py_constant
@@ -41,7 +41,7 @@ os_env_vals = {
 py_const_vals = {} 
 
 for pyc, osc in os_env_vals.items():
-    constant = Constants(os_const=osc, py_const=pyc)
+    constant = Constants(os_const = osc, py_const = pyc)
     py_constant_vals[pyc]=constant
     
 
