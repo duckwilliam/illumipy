@@ -12,7 +12,7 @@ class Constants:
                  py_const: str
                  ):
         self.os_const = os_const
-        self.py_constant = py_constant
+        self.py_constant = py_const
         self.value = None
         
     @property
