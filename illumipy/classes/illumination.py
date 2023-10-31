@@ -170,10 +170,7 @@ class Illumination(Basedata):
         calculate clear sky index from cloud cover
         """
         cloud_fraction = self.cloud_coverage / 100
-        if cloud_fraction == 1:
-            cloud_oct = 1.0882
-        else: 
-            cloud_oct = cloud_fraction
+        cloud_oct = 1.0882 if cloud_fraction == 1 else cloud_fraction
         csi = 0.75 * (cloud_oct)**3.4
         return self.rounder(csi, 2)
         
@@ -285,24 +282,15 @@ class Illumination(Basedata):
             _altitude = _altitude_temp
         else:
             _altitude = float(_altitude_temp)
-            
+
         _coefficients = self.cloud_coefficients
         _A_temp = _coefficients.get('A')
         _B_temp = _coefficients.get('B')
         _C_temp = _coefficients.get('C')
         # float _C_temp float _C_temp float _C_temp
-        if isinstance(_A_temp, float):
-            _A = _A_temp
-        else:
-            _A = float(_A_temp)
-        if isinstance(_B_temp, float):
-            _B = _B_temp
-        else:
-            _B = float(_B_temp)
-        if isinstance(_C_temp, float):
-            _C = _C_temp
-        else:
-            _C = float(_C_temp)
+        _A = _A_temp if isinstance(_A_temp, float) else float(_A_temp)
+        _B = _B_temp if isinstance(_B_temp, float) else float(_B_temp)
+        _C = _C_temp if isinstance(_C_temp, float) else float(_C_temp)
         _sky_illuminance = _A + (_B * (math.sin(_altitude))**_C)
         logging.info(f"horizontal__sky_illuminance: {_sky_illuminance}")
         return self.rounder(_sky_illuminance, 2)
