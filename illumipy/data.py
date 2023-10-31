@@ -40,25 +40,13 @@ def light_data(time=None, date=None, city=None, country=None, api_key=None, clou
     logging.debug('time is %s', _time)
     _date = date
     logging.debug('date is %s', _date)
-    if city is not None:
-        _city = city
-    else:
-        _city = CITY_DEFAULT
+    _city = city if city is not None else CITY_DEFAULT
     logging.debug('city is %s', _city)
-    if country is not None:
-        _country = country
-    else:
-        _country = COUNTRY_DEFAULT
+    _country = country if country is not None else COUNTRY_DEFAULT
     logging.debug('country is %s', _country)
-    if api_key is not None:
-        _api_key = api_key
-    else:
-        _api_key = API_KEY_DEFAULT
+    _api_key = api_key if api_key is not None else API_KEY_DEFAULT
     logging.debug('api_key is %s', _api_key)
-    if cloud_coverage is not None:
-        _cloud_coverage = cloud_coverage
-    else:
-        _cloud_coverage=None
+    _cloud_coverage = cloud_coverage if cloud_coverage is not None else None
     # illumination = initialiser(requested_hour=12)
     logging.debug('initialising illumination object')
     illumination = Illumination(
@@ -69,31 +57,28 @@ def light_data(time=None, date=None, city=None, country=None, api_key=None, clou
         api_key=_api_key,
         cloud_coverage=_cloud_coverage)
 
-    illumination_data = {}
-    illumination_data['illuminance'] = illumination.daylight_illuminance
-    illumination_data['time'] = illumination.current_time
-    illumination_data['date'] = illumination.current_date
-    illumination_data['city'] = illumination.city
-    illumination_data['country'] = illumination.country
-    illumination_data['cloud_coverage'] = illumination.cloud_coverage
-    illumination_data['et_illuminance'] = illumination.et_illuminance
-    illumination_data['direct_illuminance'] = illumination.direct_illuminance
-    illumination_data[
-        'horizontal_illuminance'
-        ] = illumination.horizontal_illuminance
-    illumination_data[
-        'horizontal_sky_illuminance'
-        ] = illumination.horizontal_sky_illuminance
-    illumination_data['sunrise'] = illumination.sunrise
-    illumination_data['sunset'] = illumination.sunset
-    illumination_data['sun_altitude'] = illumination.altitude
-    illumination_data['day'] = illumination.day
-    illumination_data['clear_sky_index'] = illumination.clear_sky
-    illumination_data['cs_irradiance'] = illumination.irradiance_clear
-    illumination_data['irradiance'] = illumination.irradiance_cloud
-    illumination_data['air_mass'] = illumination.air_mass
-    illumination_data['azimuth'] = illumination.solar_azimuth
-    illumination_data['declination'] = math.degrees(illumination.declination_angle_rad) 
+    illumination_data = {
+        'illuminance': illumination.daylight_illuminance,
+        'time': illumination.current_time,
+        'date': illumination.current_date,
+        'city': illumination.city,
+        'country': illumination.country,
+        'cloud_coverage': illumination.cloud_coverage,
+        'et_illuminance': illumination.et_illuminance,
+        'direct_illuminance': illumination.direct_illuminance,
+        'horizontal_illuminance': illumination.horizontal_illuminance,
+        'horizontal_sky_illuminance': illumination.horizontal_sky_illuminance,
+        'sunrise': illumination.sunrise,
+        'sunset': illumination.sunset,
+        'sun_altitude': illumination.altitude,
+        'day': illumination.day,
+        'clear_sky_index': illumination.clear_sky,
+        'cs_irradiance': illumination.irradiance_clear,
+        'irradiance': illumination.irradiance_cloud,
+        'air_mass': illumination.air_mass,
+        'azimuth': illumination.solar_azimuth,
+        'declination': math.degrees(illumination.declination_angle_rad),
+    }
     illumination_data['LSTM'] = math.degrees(illumination.local_standard_time_meridian_rad)
     illumination_data['EOT'] = illumination.equation_of_time_rad
     return illumination_data

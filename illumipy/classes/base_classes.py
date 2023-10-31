@@ -164,7 +164,7 @@ class Basedata:
         else:
             now = datetime.now()
             logging.debug(f"{self.requested_hour} is a not valid hour")
-            logging.debug(f'setting current_time to actual time')
+            logging.debug('setting current_time to actual time')
             _current_time = now.strftime("%-H")
         logging.info(f"set current time to {_current_time}")
         return _current_time
@@ -208,8 +208,7 @@ class Basedata:
         _longitude = _api_response[0]['lon']
         logging.info(f"latitude: {_latitude}")
         logging.info(f"longitude: {_longitude}")
-        _coordinates = (float(_latitude), float(_longitude))
-        return _coordinates
+        return float(_latitude), float(_longitude)
 
     def requester(self, _api_suburl: str, parameters: dict):
         """
@@ -241,9 +240,7 @@ class Basedata:
             }
         _api_suburl = self.api_loc
         _api_response = self.requester(_api_suburl, _parameters)
-        # _api_response = _api_response_raw
-        testdata = (_api_response)[0]['name']
-        return testdata
+        return (_api_response)[0]['name']
 
 
 class Weather(Basedata):
@@ -321,11 +318,10 @@ class Weather(Basedata):
     
     @sunrise_datetime.setter
     def sunrise_datetime(self, value):
-        if value is not None and isinstance(value, datetime):
-            _sunrise_datetime = value
-            logging.info(f"Setting sunrise datetime: {_sunrise_datetime}")
-        else:
+        if value is None or not isinstance(value, datetime):
             raise TypeError(f"{value} must be Type datetime")
+        _sunrise_datetime = value
+        logging.info(f"Setting sunrise datetime: {_sunrise_datetime}")
         self._sunrise_datetime = _sunrise_datetime
 
     @property
@@ -336,11 +332,10 @@ class Weather(Basedata):
     
     @sunset_datetime.setter
     def sunset_datetime(self, value):
-        if value is not None and isinstance(value, datetime):
-            _sunset_datetime = value
-            logging.info(f"Setting sunset datetime: {_sunset_datetime}")
-        else:
+        if value is None or not isinstance(value, datetime):
             raise TypeError(f"{value} must be Type datetime")
+        _sunset_datetime = value
+        logging.info(f"Setting sunset datetime: {_sunset_datetime}")
         self._sunset_datetime = _sunset_datetime
 
     def get_weather(self):
@@ -410,9 +405,6 @@ class Weather(Basedata):
         logging.info(f"sunrise timestamp is {_rise}")
         logging.info(f"sunset timestamp is {_set}")
         logging.info(f"current time is {_now}")
-        if _rise < _now < _set:
-            _sun_up = True
-        else:
-            _sun_up = False
+        _sun_up = _rise < _now < _set
         logging.info(f"sun up: {_sun_up}")
         return _sun_up

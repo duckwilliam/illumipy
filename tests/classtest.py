@@ -11,8 +11,7 @@ class tclass:
         self.dfei = drei
      
     def catalogue(self):
-        _catalogue = vars(self)
-        return _catalogue
+        return vars(self)
 
     def somefunc(self):
         print('foobar')
