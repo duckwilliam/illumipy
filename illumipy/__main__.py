@@ -7,10 +7,13 @@ import logging
 import argparse
 import sys
 from sys import stderr
-from .data import light_data
-from .defaults import CITY_DEFAULT, COUNTRY_DEFAULT, API_KEY_DEFAULT
+from illumipy.data import light_data
+from illumipy.defaults import main as defvar
 
 if __name__ == "__main__":
+    
+    defvar() 
+    
     argParser = argparse.ArgumentParser(
         description='General-purpose solar brightness calculator.'
         )
