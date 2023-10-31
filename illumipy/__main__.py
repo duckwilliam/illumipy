@@ -8,11 +8,11 @@ import argparse
 import sys
 from sys import stderr
 from illumipy.data import light_data
-from illumipy.defaults import set_as_env, main as defvar
+from illumipy import defaults
 
 if __name__ == "__main__":
     
-    defaults.defvar() 
+    defaults.makn() 
     
     argParser = argparse.ArgumentParser(
         description='General-purpose solar brightness calculator.'
@@ -140,6 +140,7 @@ argParser.add_argument(
                 \t['LSTM'] = Local standard time meridian in degrees.\n\
                 \t['EOT'] = Equation of Time.")
         exit()
+        
     if install_arg is True:
         defaults.set_as_env() 
         exit()
