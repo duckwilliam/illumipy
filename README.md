@@ -1,4 +1,4 @@
-illumipy** is a Python module for estimating outside Illumination levels for given location, date and time.
+**illumipy** is a Python module for estimating outside Illumination levels for given location, date and time.
 Requires an OpenWeatherMap [APIkey](https://openweathermap.org/appid)
 
 ## Features
