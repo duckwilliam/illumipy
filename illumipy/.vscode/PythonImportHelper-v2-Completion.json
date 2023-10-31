@@ -1,0 +1,167 @@
+[
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPError",
+        "importPath": "requests.exceptions",
+        "description": "requests.exceptions",
+        "isExtraImport": true,
+        "detail": "requests.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "Basedata",
+        "importPath": "illumipy.classes.base_classes",
+        "description": "illumipy.classes.base_classes",
+        "isExtraImport": true,
+        "detail": "illumipy.classes.base_classes",
+        "documentation": {}
+    },
+    {
+        "label": "Weather",
+        "importPath": "illumipy.classes.base_classes",
+        "description": "illumipy.classes.base_classes",
+        "isExtraImport": true,
+        "detail": "illumipy.classes.base_classes",
+        "documentation": {}
+    },
+    {
+        "label": "Illumination",
+        "importPath": "illumipy.classes.illumination",
+        "description": "illumipy.classes.illumination",
+        "isExtraImport": true,
+        "detail": "illumipy.classes.illumination",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "Basedata",
+        "kind": 6,
+        "importPath": "classes.base_classes",
+        "description": "classes.base_classes",
+        "peekOfCode": "class Basedata:\n    \"\"\"\n    BaseData class: Collects the relevant Data neccessary\n    to calculate Illumination and Irradiance.\n    \"\"\"\n    def __init__(self,\n                 name=None,\n                 api_key=None,\n                 api_base=None,\n                 api_loc=None,",
+        "detail": "classes.base_classes",
+        "documentation": {}
+    },
+    {
+        "label": "Weather",
+        "kind": 6,
+        "importPath": "classes.base_classes",
+        "description": "classes.base_classes",
+        "peekOfCode": "class Weather(Basedata):\n    \"\"\"\n    Weather class:\n    Using the OpenWeatherMap API, get current weather\n    infomation for given time and location.\n    \"\"\"\n    def __init__(self,\n                 name=None,\n                 api_key=None,\n                 api_base=None,",
+        "detail": "classes.base_classes",
+        "documentation": {}
+    },
+    {
+        "label": "Illumination",
+        "kind": 6,
+        "importPath": "classes.illumination",
+        "description": "classes.illumination",
+        "peekOfCode": "class Illumination(Basedata):\n    \"\"\"\n    Class Illuminaion:\n    Calculate Outside Illumination in Lux\n    for given location and time\n    \"\"\"\n    def __init__(self,\n                 name=None,\n                 api_key=None,\n                 api_base=None,",
+        "detail": "classes.illumination",
+        "documentation": {}
+    },
+    {
+        "label": "light_data",
+        "kind": 2,
+        "importPath": "data",
+        "description": "data",
+        "peekOfCode": "def light_data(time=None, date=None, city=None, country=None, api_key=None, cloud_coverage=None):\n    \"\"\" Main function:\n    Creates Illuminance object to calculate Relevant data and\n    returns a dictionary object with the following information:\n        ['illuminance']: Outside Brightness in Lux\n        ['time']: Time used as %-H (e.g. 4 or 12)\n        ['date']: Date used as YYYY-MM-DD\n        ['city']: City Used\n        ['country']: Country Used\n        ['cloud_coverage']: Cloud coverage in %",
+        "detail": "data",
+        "documentation": {}
+    },
+    {
+        "label": "Constants",
+        "kind": 6,
+        "importPath": "defaults",
+        "description": "defaults",
+        "peekOfCode": "class Constants:\n    def __init__(self, \n                 os_const: str, \n                 py_const: str\n                 ):\n        self.os_const = os_const\n        self.py_const = py_const\n        self.value = None\n    @property\n    def value(self):",
+        "detail": "defaults",
+        "documentation": {}
+    },
+    {
+        "label": "set_os_env",
+        "kind": 2,
+        "importPath": "defaults",
+        "description": "defaults",
+        "peekOfCode": "def set_os_env():\n    APIkey = input('Enter OpenWeatherMap API key: ') \n    City = input('Enter default city: ')\n    Country = input('Enter default country: ')\n    _api = f\"export OPENWEATHERMAP_API_KEY='{APIkey}'\"\n    _City = f\"export OPENWEATHERMAP_CITY='{City}'\"\n    _Country = f\"export OPENWEATHERMAP_COUNTRY='{Country}'\"\n    with open(os.path.join((os.path.expanduser('~')), '.bashrc'), \"a\") as bashrc:\n        bashrc.write(f\"{_api}\\n{_City}\\n{_Country}\")\ndef main():",
+        "detail": "defaults",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "defaults",
+        "description": "defaults",
+        "peekOfCode": "def main():\n    py_constant_vals = {} \n    for pyc, osc in os_env_vals.items():\n        constant = Constants(os_const = osc, py_const = pyc)\n        py_constant_vals[pyc] = constant.value\n    global API_KEY_DEFAULT\n    global CITY_DEFAULT\n    global COUNTRY_DEFAULT\n    API_KEY_DEFAULT = py_constant_vals['API_KEY_DEFAULT']\n    CITY_DEFAULT = py_constant_vals['CITY_DEFAULT']",
+        "detail": "defaults",
+        "documentation": {}
+    },
+    {
+        "label": "__all__",
+        "kind": 5,
+        "importPath": "defaults",
+        "description": "defaults",
+        "peekOfCode": "__all__ = ['API_KEY_DEFAULT', 'CITY_DEFAULT', 'COUNTRY_DEFAULT']\nclass Constants:\n    def __init__(self, \n                 os_const: str, \n                 py_const: str\n                 ):\n        self.os_const = os_const\n        self.py_const = py_const\n        self.value = None\n    @property",
+        "detail": "defaults",
+        "documentation": {}
+    },
+    {
+        "label": "os_env_vals",
+        "kind": 5,
+        "importPath": "defaults",
+        "description": "defaults",
+        "peekOfCode": "os_env_vals = {\n    'API_KEY_DEFAULT': 'OPENWEATHERMAP_API_KEY', \n    'CITY_DEFAULT': 'OPENWEATHERMAP_CITY', \n    'COUNTRY_DEFAULT': 'OPENWEATHERMAP_COUNTRY'\n   } \ndef set_os_env():\n    APIkey = input('Enter OpenWeatherMap API key: ') \n    City = input('Enter default city: ')\n    Country = input('Enter default country: ')\n    _api = f\"export OPENWEATHERMAP_API_KEY='{APIkey}'\"",
+        "detail": "defaults",
+        "documentation": {}
+    }
+]

@@ -21,7 +21,7 @@ class Constants:
             _value = os.environ[self.os_const]
         except KeyError:
             print(f"{self.os_const= :^>20}\n\tRun <python -m illumipy --defaults set> to add missing values to your os environment")
-        except:
+        except TypeError:
             print(f"could not assign a value to {self.py_const}") 
         else:
             self.value = _value
