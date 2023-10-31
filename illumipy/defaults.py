@@ -8,7 +8,7 @@ __all__ = ['API_KEY_DEFAULT', 'CITY_DEFAULT', 'COUNTRY_DEFAULT']
 
 class Constants:
     def __init__(self, 
-                 os_const: str
+                 os_const: str, 
                  py_constant: str
                  ):
         self.os_const = os_const
