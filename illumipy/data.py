@@ -5,10 +5,10 @@ General-purpose solar irradiance and brightness calculator.
 """
 import logging
 from illumipy.classes.illumination import Illumination
-from illumipy.defaults import main as defval
+from .defaults import dfval
 import math
 
-defaults.defval() 
+dfval() 
 
 def light_data(time=None, date=None, city=None, country=None, api_key=None, cloud_coverage=None):
     """ Main function:

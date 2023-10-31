@@ -8,11 +8,12 @@ import argparse
 import sys
 from sys import stderr
 from illumipy.data import light_data
-from illumipy import defaults
+from .defaults import main as defval
+from .defaults import set_as_env
 
 if __name__ == "__main__":
     
-    defaults.makn() 
+    defval() 
     
     argParser = argparse.ArgumentParser(
         description='General-purpose solar brightness calculator.'
@@ -142,7 +143,7 @@ argParser.add_argument(
         exit()
         
     if install_arg is True:
-        defaults.set_as_env() 
+        set_as_env() 
         exit()
         
     args_debug = f"time={time_arg}, date={date_arg}, city={city_arg},\
