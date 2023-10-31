@@ -38,11 +38,11 @@ os_env_vals = {
     'COUNTRY_DEFAULT': 'OPENWEATHERMAP_COUNTRY'
    } 
 
-py_const_vals = {} 
+py_constant_vals = {} 
 
 for pyc, osc in os_env_vals.items():
     constant = Constants(os_const = osc, py_const = pyc)
-    py_constant_vals[pyc]=constant
+    py_constant_vals[pyc] = constant
     
 
 API_KEY_DEFAULT = py_constant_vals['API_KEY_DEFAULT']
