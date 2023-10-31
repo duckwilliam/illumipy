@@ -75,27 +75,21 @@
         "documentation": {}
     },
     {
-        "label": "API_KEY_DEFAULT",
-        "importPath": "illumipy.defaults",
-        "description": "illumipy.defaults",
+        "label": "os",
+        "kind": 6,
         "isExtraImport": true,
-        "detail": "illumipy.defaults",
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
         "documentation": {}
     },
     {
-        "label": "CITY_DEFAULT",
-        "importPath": "illumipy.defaults",
-        "description": "illumipy.defaults",
+        "label": "inspect",
+        "kind": 6,
         "isExtraImport": true,
-        "detail": "illumipy.defaults",
-        "documentation": {}
-    },
-    {
-        "label": "COUNTRY_DEFAULT",
-        "importPath": "illumipy.defaults",
-        "description": "illumipy.defaults",
-        "isExtraImport": true,
-        "detail": "illumipy.defaults",
+        "importPath": "inspect",
+        "description": "inspect",
+        "detail": "inspect",
         "documentation": {}
     },
     {
@@ -135,39 +129,66 @@
         "documentation": {}
     },
     {
+        "label": "Constants",
+        "kind": 6,
+        "importPath": "illumipy.defaults",
+        "description": "illumipy.defaults",
+        "peekOfCode": "class Constants:\n    def __init__(self, \n                 os_const: str, \n                 py_const: str\n                 ):\n        self.os_const = os_const\n        self.py_const = py_const\n        self.value = None\n    @property\n    def value(self):",
+        "detail": "illumipy.defaults",
+        "documentation": {}
+    },
+    {
+        "label": "set_os_env",
+        "kind": 2,
+        "importPath": "illumipy.defaults",
+        "description": "illumipy.defaults",
+        "peekOfCode": "def set_os_env():\n    APIkey = input('Enter OpenWeatherMap API key: ') \n    City = input('Enter default city: ')\n    Country = input('Enter default country: ')\n    _api = f\"export OPENWEATHERMAP_API_KEY='{APIkey}'\"\n    _City = f\"export OPENWEATHERMAP_CITY='{City}'\"\n    _Country = f\"export OPENWEATHERMAP_COUNTRY='{Country}'\"\n    with open(os.path.join((os.path.expanduser('~')), '.bashrc'), \"a\") as bashrc:\n        bashrc.write(f\"{_api}\\n{_City}\\n{_Country}\")\ndef main():",
+        "detail": "illumipy.defaults",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "illumipy.defaults",
+        "description": "illumipy.defaults",
+        "peekOfCode": "def main():\n    py_constant_vals = {} \n    for pyc, osc in os_env_vals.items():\n        constant = Constants(os_const = osc, py_const = pyc)\n        py_constant_vals[pyc] = constant.value\n    global API_KEY_DEFAULT\n    global CITY_DEFAULT\n    global COUNTRY_DEFAULT\n    API_KEY_DEFAULT = py_constant_vals['API_KEY_DEFAULT']\n    CITY_DEFAULT = py_constant_vals['CITY_DEFAULT']",
+        "detail": "illumipy.defaults",
+        "documentation": {}
+    },
+    {
         "label": "__all__",
         "kind": 5,
         "importPath": "illumipy.defaults",
         "description": "illumipy.defaults",
-        "peekOfCode": "__all__ = ['API_KEY_DEFAULT', 'CITY_DEFAULT', 'COUNTRY_DEFAULT']\nAPI_KEY_DEFAULT = 'fc26e33305a8c4240d70606378900c76'\nCITY_DEFAULT = 'Hamburg'\nCOUNTRY_DEFAULT = 'Germany'",
+        "peekOfCode": "__all__ = ['API_KEY_DEFAULT', 'CITY_DEFAULT', 'COUNTRY_DEFAULT']\nclass Constants:\n    def __init__(self, \n                 os_const: str, \n                 py_const: str\n                 ):\n        self.os_const = os_const\n        self.py_const = py_const\n        self.value = None\n    @property",
         "detail": "illumipy.defaults",
         "documentation": {}
     },
     {
-        "label": "API_KEY_DEFAULT",
+        "label": "os_env_vals",
         "kind": 5,
         "importPath": "illumipy.defaults",
         "description": "illumipy.defaults",
-        "peekOfCode": "API_KEY_DEFAULT = 'fc26e33305a8c4240d70606378900c76'\nCITY_DEFAULT = 'Hamburg'\nCOUNTRY_DEFAULT = 'Germany'",
+        "peekOfCode": "os_env_vals = {\n    'API_KEY_DEFAULT': 'OPENWEATHERMAP_API_KEY', \n    'CITY_DEFAULT': 'OPENWEATHERMAP_CITY', \n    'COUNTRY_DEFAULT': 'OPENWEATHERMAP_COUNTRY'\n   } \ndef set_os_env():\n    APIkey = input('Enter OpenWeatherMap API key: ') \n    City = input('Enter default city: ')\n    Country = input('Enter default country: ')\n    _api = f\"export OPENWEATHERMAP_API_KEY='{APIkey}'\"",
         "detail": "illumipy.defaults",
         "documentation": {}
     },
     {
-        "label": "CITY_DEFAULT",
-        "kind": 5,
-        "importPath": "illumipy.defaults",
-        "description": "illumipy.defaults",
-        "peekOfCode": "CITY_DEFAULT = 'Hamburg'\nCOUNTRY_DEFAULT = 'Germany'",
-        "detail": "illumipy.defaults",
+        "label": "tclass",
+        "kind": 6,
+        "importPath": "tests.classtest",
+        "description": "tests.classtest",
+        "peekOfCode": "class tclass:\n    def __init__(self,\n                 eins,\n                 zwei,\n                 drei\n                ):\n        self.einz = eins\n        self.zwei = zwei\n        self.dfei = drei\n    def catalogue(self):",
+        "detail": "tests.classtest",
         "documentation": {}
     },
     {
-        "label": "COUNTRY_DEFAULT",
+        "label": "o",
         "kind": 5,
-        "importPath": "illumipy.defaults",
-        "description": "illumipy.defaults",
-        "peekOfCode": "COUNTRY_DEFAULT = 'Germany'",
-        "detail": "illumipy.defaults",
+        "importPath": "tests.classtest",
+        "description": "tests.classtest",
+        "peekOfCode": "o = tclass(1, 2, 3)\n#for i in vars(o).items():\n  #  print(i)\nprint(o.catalogue().items())",
+        "detail": "tests.classtest",
         "documentation": {}
     }
 ]
