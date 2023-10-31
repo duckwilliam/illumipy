@@ -5,7 +5,7 @@ General-purpose solar irradiance and brightness calculator.
 """
 import logging
 from illumipy.classes.illumination import Illumination
-from .defaults import dfval
+from .defaults import main as dfval
 import math
 
 dfval() 
