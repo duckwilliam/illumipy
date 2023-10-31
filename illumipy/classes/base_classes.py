@@ -56,6 +56,8 @@ class Basedata:
             self.requested_hour = requested_hour
         else:
             self._requested_hour = None
+        self.latitude = None
+        self.longitude = None
      
     @property
     def sunrise_datetime(self):
