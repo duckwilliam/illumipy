@@ -6,7 +6,6 @@ import logging
 import math
 from illumipy.classes.base_classes import Basedata, Weather
 
-
 class Illumination(Basedata):
     """
     Class Illuminaion:
@@ -77,6 +76,7 @@ class Illumination(Basedata):
         self.day = day
         self.sunrise = weather.sunrise
         self.sunset = weather.sunset
+        self.timezone = weather.timezone
         self.cloud_coverage = cloud_coverage
         self.altitude_cached = 90
 
@@ -95,37 +95,75 @@ class Illumination(Basedata):
         _day_of_the_year = self.day_of_the_year
         _et_illuminance = float(129) * (1 + 0.034 * math.cos(((2 * math.pi)/356) * (_day_of_the_year - 2)))
         logging.info(f'calculated extraterrestrial_illuminance: {_et_illuminance}')
-        return _et_illuminance
+        return self.rounder(_et_illuminance, 2)
 
+    @property
+    def local_standard_time_meridian_rad(self):
+        """
+        calculates local standard time meridian
+        """
+        _lstm_rad = math.radians(15) * self.timezone
+        return self.rounder(_lstm_rad, 2)
+
+    @property
+    def equation_of_time_rad(self):
+        _doy = self.day_of_the_year
+        _B_rad = math.radians((360/365) * (_doy - 81))
+        _eot_rad = 9.87 * math.sin(2 * _B_rad) - 7.53 * math.cos(_B_rad) - 1.5 * math.sin(_B_rad)
+        return self.rounder(_eot_rad, 2)
+    
+    @property
+    def time_correction_factor_rad(self):
+        _eot_rad = self.equation_of_time_rad
+        _lsmt_rad = self.local_standard_time_meridian_rad
+        long_rad = math.radians(self.longitude)
+        _tcf_rad = 4 * (long_rad - _lsmt_rad) + _eot_rad
+        return self.rounder(_tcf_rad, 2)
+        
+    @property
+    def local_solar_time_rad(self):
+        _lt = int(self.current_time)
+        _tcf_rad = self.time_correction_factor_rad
+        _lst = _lt + (_tcf_rad / 60)
+        return self.rounder(_lst, 2)
+        
+    @property
+    def hour_angle_rad(self):
+        _lst = self.local_solar_time_rad
+        _hra_rad = math.radians(15) * (_lst - 12)
+        return self.rounder(_hra_rad, 2)
+        
+    @property
+    def declination_angle_rad(self):
+        _doy = self.day_of_the_year
+        _da_rad = math.radians(-23.45) * math.cos(math.radians((360/365) * (_doy + 10)))
+        return self.rounder(_da_rad, 2)
+    
     @property
     def altitude(self):
         """
         Calculates the solar altitude for a given longitude, date and time.
         Returns solar altitude in degrees.
         """
-        _hour: float = float(self.current_time)
-        _day_of_year = self.day_of_the_year
-        # _declination = (1/180×(-23.45) * pi * cos(1/180 (0.9863 * pi) (_day_of_the_year + 10)))/(pi / 180)
-        _longitude = self.longitude
-        # Calculate declination angle
-        _declination_rad = math.radians(23.45) * math.sin(math.radians(360 / 365 * (_day_of_year - 81)))
-        _declination = math.degrees(_declination_rad)
-        # Calculate equation of time
-        _B = 360/365 * (_day_of_year - 81)
-        _EOT = 9.87 * math.sin(2 * _B) - 7.53 * math.cos(_B) - 1.5 * math.sin(_B)
-
-        # Calculate time offset from solar noon
-        _lst = _longitude + _EOT + _hour * 15
-        _time_offset = _lst - 12 * 15
-
-        # Calculate solar altitude angle
-        # _altitude = math.asin(math.sin(math.radians(_declination)) * math.cos(math.radians(_longitude)) + math.cos(math.radians(_declination)) * math.sin(math.radians(_longitude)) * math.cos(math.radians(_time_offset)))
-        _altitude = math.asin(math.sin(math.radians(_declination)) * math.sin(math.radians(_longitude)) + math.cos(math.radians(_declination)) * math.cos(math.radians(_longitude)) * math.cos(math.radians(_time_offset)))
-
-        self.altitude_cached = math.degrees(_altitude)
-        logging.info(f"altitude: {math.degrees(_altitude)}")
-        return math.degrees(_altitude)
+        _lat_rad = math.radians(self.latitude)
+        _hra_rad = self.hour_angle_rad
+        _da_rad = self.declination_angle_rad
+        _alt_rad = math.asin(math.sin(_da_rad) * math.sin(_lat_rad) + math.cos(_da_rad) * math.cos(_lat_rad) * math.cos(_hra_rad))
+        _alt_deg = math.degrees(_alt_rad)
+        self.altitude_cached = self.rounder(_alt_deg, 2)
+        logging.info(f"altitude: {_alt_deg}")
+        return self.rounder(_alt_deg, 2)
     
+    @property 
+    def solar_azimuth(self):
+        _lat_rad = math.radians(self.latitude)
+        _alt_rad = math.radians(self.altitude)
+        _hra_rad = self.hour_angle_rad
+        _da_rad = self.declination_angle_rad
+        _azi_rad = math.acos(((math.sin(_da_rad) * math.cos(_lat_rad)) - (math.cos(_da_rad) * math.sin(_lat_rad) * math.cos(_hra_rad))) / math.cos(_alt_rad))
+        _azi_deg = math.degrees(_azi_rad)
+        return self.rounder(_azi_deg, 2)
+        
     @property
     def clear_sky(self):
         """
@@ -137,17 +175,22 @@ class Illumination(Basedata):
         else: 
             cloud_oct = cloud_fraction
         csi = 0.75 * (cloud_oct)**3.4
-        return csi
+        return self.rounder(csi, 2)
         
     @property
     def irradiance_clear(self):
         """
         Calculates solar irradiance for clear skies 
         """
-        _altitude = self.altitude
-        _irradiance_clear = 910 * math.sin(_altitude) - 30
-        return _irradiance_clear
-        
+        _alt_rad = self.altitude
+        _irradiance_clear = 910 * math.sin(_alt_rad) - 30
+        return self.rounder(_irradiance_clear, 2)
+    
+    @property
+    def solar_radiation_direct(self):
+        _am_rad = self.air_mass
+        _srd = 1.353 * 0.7 ** (_am_rad ** 0.670)
+    
     @property
     def irradiance_cloud(self):
         """
@@ -156,8 +199,8 @@ class Illumination(Basedata):
         """
         _irradiance_clear = self.irradiance_clear
         _csi = self.clear_sky
-        _irradiance_cloud = _irradiance_clear * _csi
-        return _irradiance_cloud
+        _irradiance_cloud = _irradiance_clear * (1 - _csi) 
+        return self.rounder(_irradiance_cloud, 2)
     
     @property
     def air_mass(self):
@@ -165,9 +208,10 @@ class Illumination(Basedata):
         Calculates the air mass for a given solar altitude.
         """
         _altitude = self.altitude
-        _air_mass = 1 / (math.cos(math.radians(_altitude)) + 0.50572 * (96.07995 - _altitude)**-1.6364)
-        logging.info(f"air_mass: {_air_mass}")
-        return _air_mass
+        _am_rad = 1/(math.cos(math.radians(90 - _altitude)) + 0.50572/(96.07995 - math.radians(90 - _altitude))**1.6364)
+      #  _air_mass = 1 / (math.cos(_altitude) + 0.50572 * (96.07995 - _altitude)**-1.6364)
+        logging.info(f"air_mass: {_am_rad}")
+        return self.rounder(_am_rad, 2)
     
     @property
     def cloud_coefficients(self):
@@ -215,7 +259,7 @@ class Illumination(Basedata):
         else:
             _direct_illuminance = _et_illuminance * math.exp(-1 * _c * _air_mass)
         logging.info(f"direct_illuminance: {_direct_illuminance}")
-        return _direct_illuminance
+        return self.rounder(_direct_illuminance, 2)
 
     @property
     def horizontal_illuminance(self):
@@ -227,7 +271,7 @@ class Illumination(Basedata):
         _direct_illuminance = self.direct_illuminance
         _horizontal_illuminance = _direct_illuminance * math.sin(_altitude)
         logging.info(f"horizontal_illuminance: {_horizontal_illuminance}")
-        return _horizontal_illuminance
+        return self.rounder(_horizontal_illuminance, 2)
     
     @property
     def horizontal_sky_illuminance(self):
@@ -261,7 +305,7 @@ class Illumination(Basedata):
             _C = float(_C_temp)
         _sky_illuminance = _A + (_B * (math.sin(_altitude))**_C)
         logging.info(f"horizontal__sky_illuminance: {_sky_illuminance}")
-        return _sky_illuminance
+        return self.rounder(_sky_illuminance, 2)
     
     @property
     def daylight_illuminance(self):

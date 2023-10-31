@@ -57,7 +57,6 @@ class Basedata:
         else:
             self._requested_hour = None
      
-     
     @property
     def sunrise_datetime(self):
         return self._sunrise_datetime
@@ -141,8 +140,8 @@ class Basedata:
     @property
     def day_of_the_year(self):
         """
-        @brief Returns the day of the year. It is defined as the number of days since January 1 1970 00 : 00 : 00.
-        @return a tuple of the form ( year month day )
+         @brief Returns the day of the year. It is defined as the number of days since January 1 1970 00 : 00 : 00.
+         @return a tuple of the form ( year month day )
         """
         _date_object = datetime.strptime(self.current_date, "%Y-%m-%d")
         _day_of_the_year = _date_object.timetuple().tm_yday
@@ -170,11 +169,31 @@ class Basedata:
 
     @property
     def latitude(self):
+        if self._latitude is None:
+            self._latitude = self.coordinates[0]
+        return self._latitude
+    
+    @latitude.setter
+    def latitude(self, value):
+        self._latitude = value
+  
+    @property
+    def longitude(self):
+        if self._longitude is None:
+            self._longitude = self.coordinates[1]
+        return self._longitude
+     
+    @longitude.setter
+    def longitude(self, value):
+        self._longitude = value
+
+    @property
+    def coordinates(self):
         """
-        Calls OpenWeatherMap API to get latitude of the city and
-        returns it as "latitude".
+        Calls OpenWeatherMap API to get latitude and longitude of the city and
+        returns them as tuple. 
         """
-        logging.debug('getting latitude')
+        logging.debug('getting coordinates')
         _parameters = {
             "q": f"{self.city},{self.country}",
             "limit": 1
@@ -184,27 +203,11 @@ class Basedata:
         _api_response = self.requester(_api_suburl, _parameters)
         # _api_response = _api_response_raw
         _latitude = _api_response[0]['lat']
-        logging.info(f"latitude: {_latitude}")
-        return float(_latitude)
-
-    @property
-    def longitude(self):
-        """
-        Calls OpenWeatherMap API to get longitude of the city and
-        returns it as "longitude".
-        """
-        logging.debug('getting longitude')
-        _parameters = {
-            "q": f"{self.city},{self.country}",
-            "limit": 1
-        }
-        logging.debug(f"parameters: {_parameters}")
-        _api_suburl = str(self.api_loc)
-        _api_response = self.requester(_api_suburl, _parameters)
-        # _api_response = _api_response_raw.json()
         _longitude = _api_response[0]['lon']
+        logging.info(f"latitude: {_latitude}")
         logging.info(f"longitude: {_longitude}")
-        return float(_longitude)
+        _coordinates = (float(_latitude), float(_longitude))
+        return _coordinates
 
     def requester(self, _api_suburl: str, parameters: dict):
         """
@@ -277,7 +280,19 @@ class Weather(Basedata):
         self._sunset = None
         self._sunrise_datetime = None
         self._sunset_datetime = None
-     
+        self._timezone = None
+        
+    @property
+    def timezone(self):
+        if self._timezone is None:
+            self.get_weather
+        return self._timezone
+        
+    @timezone.setter
+    def timezone(self, value: int):
+        _timezone = value / (60**2)
+        self._timezone = _timezone
+    
     @property
     def sunset(self):
         self.sunset = datetime.strftime(self.sunset_datetime, "%H:%M:%S")
@@ -289,13 +304,12 @@ class Weather(Basedata):
     
     @property
     def sunrise(self):
-        _sunrise = datetime.strftime(self.sunrise_datetime, "%H:%M:%S")
-        return _sunrise
+        self.sunrise = datetime.strftime(self.sunrise_datetime, "%H:%M:%S")
+        return self._sunrise
           
     @sunrise.setter
     def sunrise(self, value):
         self._sunrise = value
-
 
     @property
     def sunrise_datetime(self):
@@ -342,9 +356,11 @@ class Weather(Basedata):
         # _api_response = _api_response_raw.json()
         _sunrise = _api_response['sys']['sunrise']
         _sunset = _api_response['sys']['sunset']
+        _timezone= _api_response['timezone']
         logging.info(f"sunrise: {_sunrise}")
         logging.info(f"sunset: {_sunset}")
         # _time_shift = _api_response['timezone']
+        self.timezone = int(_timezone)
         self.sunrise_unix = int(_sunrise)
         self.sunset_unix = int(_sunset)
         if self.requested_day is not None:

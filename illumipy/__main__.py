@@ -2,13 +2,13 @@
 """
 __main__ module for running from cli
 """
-
+import pprint
 import logging
 import argparse
 import sys
 from sys import stderr
-from illumipy.data import light_data
-from illumipy.defaults import CITY_DEFAULT, COUNTRY_DEFAULT, API_KEY_DEFAULT
+from .data import light_data
+from .defaults import CITY_DEFAULT, COUNTRY_DEFAULT, API_KEY_DEFAULT
 
 if __name__ == "__main__":
     argParser = argparse.ArgumentParser(
@@ -88,6 +88,8 @@ if __name__ == "__main__":
         default=False,
         )
 
+
+
     args = argParser.parse_args()
 
     LOG_FORMAT = '[%(levelname)s]:  \t%(module)s.%(funcName)s() \
@@ -111,24 +113,29 @@ if __name__ == "__main__":
                 \t['city']: City Used\n\
                 \t['country']: Country Used\n\
                 \t['cloud_coverage']: Cloud coverage in %\n\
-                \t['et_illuminance']: Extraterrestrial illuminance in Lux\n\
+                \t['et_illuminance']: Extraterrestrial Illuminance in Lux\n\
                 \t['direct_illuminance']: Direct Illuminance in Lux\n\
                 \t['horizontal_illuminance']: Horizontal Illuminance in Lux\n\
                 \t['horizontal_sky_illuminance']: Horizontal Sky Illuminance in Lux\n\
                 \t['sunrise']: Time of Sunrise as hh:mm\n\
                 \t['sunset']: Time of sunset as hh:mm\n\
-                \t['sun_altitude']: Sun altitude at [Time] in degrees\n\
+                \t['sun_altitude']: Sund altitude at [Time] in degrees\n\
                 \t['day']: True if there is daylight at [Time]\n\
                 \t['clear_sky_index'] = Aproximation of Clear Sky Index based on cloud coverage\n\
                 \t['cs_irradiance'] = Estimated Clear Sky Irradiance in W/m^2 based on solar altitude.\n\
-                \t['irradiance'] = Estimated current Irradiance in W/m^2 based on solar altitude and cloud coverage.")
+                \t['irradiance'] = Estimated current Irradiance in W/m^2 based on solar altitude and cloud coverage.\n\
+                \t['air_mass'] = calculated air mass for given solar altitude, based on empirical model.\n\
+                \t['azimuth'] = Calculated solar azimuth for given time and location.\n\
+                \t['declination'] = calculated solar declination angle for given date.\n\
+                \t['LSTM'] = Local standard time meridian in degrees.\n\
+                \t['EOT'] = Equation of Time.")
         exit()
         
     args_debug = f"time={time_arg}, date={date_arg}, city={city_arg},\
         country={country_arg}, api_key={api_arg}"
     logging.info('Calling main function in main.py')
     logging.debug('Using these args: %s', args_debug)
-
+    #keylen = len(max(brightness, key=len))
     try:
         brightness = light_data(time=time_arg,
                         date=date_arg,
@@ -143,7 +150,10 @@ if __name__ == "__main__":
             if short_arg is True:
                 print(brightness[item])
             else:
-                print(f"{item}: {brightness[item]}")
+                value = str(brightness[item])
+                itemf = str(item)
+                print(f"{itemf + ':' :.<30}{value}")
+            #    print("{0:<20s}: {1:>6.2f}".format(item, {brightness[item]} )) 
     except KeyboardInterrupt:
         stderr.write("Interrupted by User, exiting...\n")
         sys.exit(1)

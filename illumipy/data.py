@@ -6,6 +6,7 @@ General-purpose solar irradiance and brightness calculator.
 import logging
 from illumipy.classes.illumination import Illumination
 from illumipy.defaults import API_KEY_DEFAULT, CITY_DEFAULT, COUNTRY_DEFAULT
+import math
 
 
 def light_data(time=None, date=None, city=None, country=None, api_key=None, cloud_coverage=None):
@@ -89,4 +90,10 @@ def light_data(time=None, date=None, city=None, country=None, api_key=None, clou
     illumination_data['clear_sky_index'] = illumination.clear_sky
     illumination_data['cs_irradiance'] = illumination.irradiance_clear
     illumination_data['irradiance'] = illumination.irradiance_cloud
+    illumination_data['air_mass'] = illumination.air_mass
+    illumination_data['azimuth'] = illumination.solar_azimuth
+    illumination_data['declination'] = math.degrees(illumination.declination_angle_rad) 
+    illumination_data['LSTM'] = math.degrees(illumination.local_standard_time_meridian_rad)
+    illumination_data['EOT'] = illumination.equation_of_time_rad
     return illumination_data
+#    return vars(illumination) 
