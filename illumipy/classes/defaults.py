@@ -17,12 +17,15 @@ class Constants:
         self.country = country
 
     def _check_os_env(self):
-        valid_als = {k:v for {k:v} in vars(self).items() if v is not None} 
-    
+        valid_vals = {k:(if v) for {k:v} in vars(self).items() if v is not None} 
+        try:
+            _value = os.environ[self.os_const]
         except KeyError:
-            print(f"{self.os_const= :^>20}\n\tRun <python -m illumipy --defaults set> to add missing values to your os environment")
-        except:
-            print(f"could not assign a value to {self.py_const}") 
+            print(f"could find a value to attach to {self.py_const}")
+        except TypeError:
+            print(f"{self.os_const= :^>20}\n\t\
+                  Run <python -m illumipy.defaults --set>\
+                      to add missing values to your os environment")       
         else:
             self.value = _value
             return self._value
