@@ -34,7 +34,6 @@ It Takes the following arguments:
 """
 __all__ = ['data', 'defaults', 'classes']
 
-from illumipy import data, defaults, classes
 
 
 __author__ = "Kalle Fornia"

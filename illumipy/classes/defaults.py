@@ -8,17 +8,17 @@ import os
 
 class Constants:
     def __init__(self, 
-                 os_const: str, 
-                 py_const: str
+                 api: str = None,
+                 city: str = None,
+                 country: str = None
                  ):
-        self.os_const = os_const
-        self.py_const = py_const
-        self.value = None
- 
-    @property
-    def value(self):
-        try:
-            _value = os.environ[self.os_const]
+        self.api = api
+        self.city = city
+        self.country = country
+
+    def _check_os_env(self):
+        valid_als = {k:v for {k:v} in vars(self).items() if v is not None} 
+    
         except KeyError:
             print(f"{self.os_const= :^>20}\n\tRun <python -m illumipy --defaults set> to add missing values to your os environment")
         except:

@@ -8,8 +8,8 @@ import argparse
 import sys
 from sys import stderr
 from illumipy.data import light_data
-from .defaults import main as defval
-from .defaults import set_as_env
+from illumipy.defaults import main as defval
+from illumipy.defaults import set_as_env
 
 if __name__ == "__main__":
     

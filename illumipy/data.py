@@ -4,8 +4,8 @@
 General-purpose solar irradiance and brightness calculator.
 """
 import logging
-from illumipy.classes.illumination import Illumination
-from .defaults import main as dfval
+import defaults
+from classes import Illumination
 import math
 
 dfval() 
@@ -98,3 +98,6 @@ def light_data(time=None, date=None, city=None, country=None, api_key=None, clou
     illumination_data['EOT'] = illumination.equation_of_time_rad
     return illumination_data
 #    return vars(illumination) 
+
+if __name__ == "__main__":
+    
