@@ -2,6 +2,7 @@
 """
 __main__ module for running from cli
 """
+
 import pprint
 import logging
 import argparse
@@ -14,7 +15,7 @@ from illumipy.defaults import set_as_env
 if __name__ == "__main__":
     
     defval() 
-    
+
     argParser = argparse.ArgumentParser(
         description='General-purpose solar brightness calculator.'
         )
@@ -84,20 +85,20 @@ if __name__ == "__main__":
         action="store_true",
         default=False,
     )
-    argParser.add_argument(
-        "-s",
-        "--short",
-        help="Print only values, no description",
-        action="store_true",
-        default=False,
-   ) 
-    argParser.add_argument(
-        "-i",
-        "--install",
-        help="Set up default vars" ,
-        action="store_true",
-        default=False,
-   ) 
+     argParser.add_argument(
+         "-s",
+         "--short",
+         help="Print only values, no description",
+         action="store_true",
+         default=False,
+    )
+     argParser.add_argument(
+         "-i",
+         "--install",
+         help="Set up default vars" ,
+         action="store_true",
+         default=False,
+    ) 
 
     args = argParser.parse_args()
 
@@ -114,7 +115,7 @@ if __name__ == "__main__":
     output_arg = args.output
     short_arg = args.short
     install_arg = args.install
-    
+
     if output_arg == ['help']:
         print("Available values for output:\n\
                 \t['illuminance']: Outside Brightness in Lux\n\
@@ -140,11 +141,11 @@ if __name__ == "__main__":
                 \t['LSTM'] = Local standard time meridian in degrees.\n\
                 \t['EOT'] = Equation of Time.")
         exit()
-        
+
     if install_arg is True:
         set_as_env() 
         exit()
-        
+
     args_debug = f"time={time_arg}, date={date_arg}, city={city_arg},\
         country={country_arg}, api_key={api_arg}"
     logging.info('Calling main function in main.py')
@@ -156,18 +157,15 @@ if __name__ == "__main__":
                         city=city_arg,
                         country=country_arg,
                         api_key=api_arg)
-        if print_all is True:
-            dataset = brightness.keys()
-        else:
-            dataset = output_arg
+        dataset = brightness.keys() if print_all is True else output_arg
         for item in dataset:
             if short_arg is True:
                 print(brightness[item])
             else:
                 value = str(brightness[item])
                 itemf = str(item)
-                print(f"{itemf + ':' :.<30}{value}")
-            #    print("{0:<20s}: {1:>6.2f}".format(item, {brightness[item]} )) 
+                print(f"{f'{itemf}:':.<30}{value}")
+                    #    print("{0:<20s}: {1:>6.2f}".format(item, {brightness[item]} )) 
     except KeyboardInterrupt:
         stderr.write("Interrupted by User, exiting...\n")
         sys.exit(1)
